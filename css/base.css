@@ -1,0 +1,33 @@
+
+ body{margin: 0;  }
+
+
+
+ div, a, input, textarea, button {box-sizing: border-box;}
+ .gnb {
+    font-weight: bold;
+    list-style-type: none;
+    margin: 0; padding: 0; overflow:hidden;
+    margin-bottom: 24px;
+    
+    /* background-color: #dadada; */
+}
+.gnb li{float: left;}
+/* .gnb .float_r{float: right;} */
+.gnb li a{
+    display: block; color: black;
+    text-align: center; padding: 14px 136px 14px 136px;
+    text-decoration: none; 
+}
+.gnb li a.active {
+    background-color: lightsteelblue; color: black;
+}
+.gnb li a:hover:not(.active) {
+    background-color: lightsteelblue; color: black;
+}
+.clearfix {content: "";clear: both; display: table;
+}
+header a img {width: 200px; height: 50px;
+             display: block; margin: 10px auto 10px auto;
+}
+
