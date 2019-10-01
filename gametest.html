@@ -16,7 +16,9 @@
             ball : [],
             bricks : []
         }
-       
+        var rightPressed = false;
+        var leftPressed = false;
+
             function startGame(){
                 myGameArea.start();
                 env.paddle = new component(100, 10, "red", 200, 290);
@@ -34,7 +36,6 @@
                 // }
                 // env.bricks = new component(75,20,"blue",30,30);
             }
-            
             var myGameArea = {
                 canvas : document.createElement("canvas"),
                 start : function() {
@@ -48,6 +49,7 @@
                 clear: function(){
                     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 },
+            
             }
             //생성자 함수
             function component(width, height, color, x, y){
@@ -60,7 +62,6 @@
                 this.ballRadius = 15;
                 this.paddleX = (myGameArea.canvas.width-100)/2;
                 
-               
                 this.update = function(){
                     ctx = myGameArea.context;
                     ctx.fillStyle = color;
@@ -87,22 +88,16 @@
                         // }                                
                     }
                 }
+                this.paddleM = function(){
+                    if(rightPressed && this.paddleX < myGameArea.canvas.width-100) {    //패들이 화면 밖으로 사라지는걸 방지
+                        this.paddleX += 7;                                           //오른쪽 방향으로 7픽셀만큼
+                    }
+                    else if(leftPressed && this.paddleX > 0) {                       //왼쪽 방향으로 7픽셀만큼
+                        this.paddleX -= 7;
+                    }
+                }
                 
             }
-            var rightPressed = false;
-            var leftPressed = false;
-          
-            function move(){
-                //키값
-                var paddleX;
-                if(rightPressed && paddleX < myGameArea.canvas.width-100) {    //패들이 화면 밖으로 사라지는걸 방지
-                    paddleX += 7;                                           //오른쪽 방향으로 7픽셀만큼
-                }
-                else if(leftPressed && paddleX > 0) {                       //왼쪽 방향으로 7픽셀만큼
-                    paddleX -= 7;
-                }
-            }
-            
             
             document.addEventListener("keydown", keyDownHandler, false); //키보드중 어떤키 하나가 눌리면
             document.addEventListener("keyup", keyUpHandler, false);    //키 이벤트가 발생하여 keyDownHandler
@@ -128,9 +123,9 @@
             function updateGameArea(){
                 myGameArea.clear();
                 env.paddle.update();
+                env.paddle.paddleM();
                 env.ball.update();
                 env.ball.newPos();
-                move();
                 // for(var c = 0; c<5; c++){
                 //     for(var r = 0; r<3; r++){
                 //         env.bricks[c][r].update();
