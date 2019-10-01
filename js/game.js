@@ -95,7 +95,7 @@
              setInterval(draw, 50);                          // 패들에 튕길때마다 속도 빨라지기
          }                                                                        
          else{                                                                   
-             alert("GAME OVER");                                                  
+            //  alert("GAME OVER");                                                  
              document.location.reload();  
          }                                                                        
      }

@@ -23,18 +23,14 @@
                 myGameArea.start();
                 env.paddle = new component(100, 10, "red", 200, 290);
                 env.ball = new component(15,15, "green", 250, 250);
-                // for(var c=0; c<5; c++) {
-                //     env.bricks[c] = [];
-                //     for(var r=0; r<3; r++) {
-                //         env.bricks[c][r] = {x: 0, y:0};
-                //         var brickX = (c*85)+30;
-                //         var brickY = (r*30)+30;
-                //         env.bricks[c][r] = brickX;
-                //         env.bricks[c][r] = brickY;
-                //         env.bricks.push(new component(75,20,"blue",brickX,brickY));
-                //     }
-                // }
-                // env.bricks = new component(75,20,"blue",30,30);
+                for(var c=0; c<5; c++) {
+                    env.bricks[c] = [];
+                    for(var r=0; r<3; r++) {
+                        var brickX = (c*85)+30;
+                        var brickY = (r*30)+30;
+                        env.bricks[c].push(new component(75,20,"blue",brickX,brickY));
+                    }
+                }
             }
             var myGameArea = {
                 canvas : document.createElement("canvas"),
@@ -45,18 +41,10 @@
                     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
                     this.interval= setInterval(updateGameArea, 20);
                     
-                    if(rightPressed && paddleX < this.canvas.width-100) {    //패들이 화면 밖으로 사라지는걸 방지
-                        paddleX += 7;                                           //오른쪽 방향으로 7픽셀만큼
-                    }
-                    else if(leftPressed && paddleX > 0) {                       //왼쪽 방향으로 7픽셀만큼
-                        paddleX -= 7;
-                    }
-                
                 },
                 clear: function(){
                     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 },
-            
             }
             //생성자 함수
             function component(width, height, color, x, y){
@@ -64,10 +52,10 @@
                 this.height = height;
                 this.x = x;
                 this.y = y;
-                this.dX = -2;
-                this.dY =-2;
-                this.ballRadius = 15;
-                this.paddleX = (myGameArea.canvas.width-100)/2;
+                this.dX = -3;
+                this.dY =-2.2;
+                this.ballRadius = 22;
+
                 
                 this.update = function(){
                     ctx = myGameArea.context;
@@ -81,11 +69,12 @@
                     if(this.x + this.dX > myGameArea.canvas.width-this.ballRadius || this.x + this.dX < this.ballRadius) {
                         this.dX = -(this.dX);
                     }
+                    
                     if(this.y + this.dY < this.ballRadius) {
                         this.dY = -(this.dY);
                     }
                     else if(this.y + this.dY > myGameArea.canvas.height-this.ballRadius) {                                  
-                        if(this.x > this.paddleX && this.x < this.paddleX + 100) {                           
+                        if(this.x > env.paddle["x"] && this.x < env.paddle["x"] + 100) {                           
                             this.dY = -(this.dY);                                       //화면 중앙으로 다시 보내기                        
                         }  
                         // else{                                                                   
@@ -93,8 +82,8 @@
                         //     document.location.reload();  
                         // }                                
                     }
-                }
                 
+                }
                 
             }
             
@@ -118,18 +107,36 @@
                     leftPressed = false;
                 }
             }
-           
+           //화면제어를 위한 함수
             function updateGameArea(){
                 myGameArea.clear();
                 env.paddle.update();
                 env.ball.update();
                 env.ball.newPos();
-                // for(var c = 0; c<5; c++){
-                //     for(var r = 0; r<3; r++){
-                //         env.bricks[c][r].update();
-                //     }
-                // }
-            }
+                for(var c = 0; c<5; c++){
+                    for(var r = 0; r<3; r++){
+                        env.bricks[c][r].update();
+                    }
+                }
+                if(rightPressed && env.paddle["x"] < myGameArea.canvas.width-100) {    //패들이 화면 밖으로 사라지는걸 방지
+                    env.paddle["x"] += 7;                                           //오른쪽 방향으로 7픽셀만큼
+                }
+                else if(leftPressed && env.paddle["x"] > 0) {                       //왼쪽 방향으로 7픽셀만큼
+                    env.paddle["x"] -= 7;                                          //오른쪽 방향으로 7픽셀만큼
+                }
+                    // for(var c=0; c<5; c++) {
+                    //     for(var r=0; r<3; r++) {
+                    //         var b = env.bricks[c][r];
+                    //         if(b.status == 1) {
+                    //             // 벽돌의 충돌감지 조건 
+                    //             if(this.x > b.x && this.x < b.x+75 && this.y > b.y && this.y < b.y+20) {
+                    //                 this.dY = -(this.dY);
+                    //                 b.status = 0; //충돌하면 더이상 벽돌을 표시 하지 않음
+                    //             }
+                    //         }
+                    //     }
+                    // }
+            }    
             
     </script>
     
